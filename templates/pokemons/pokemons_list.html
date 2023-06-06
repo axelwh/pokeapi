@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <h1> La colección de pokemons es de : {{ count }}</h1>
+        {% if type %}
+            <h5> Estás buscando por el tipo: {{ type }}</h5>
+        {% endif %}
+        {% if pages_config %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'pokemons:get_pokemons' %}">
+                            << First
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link {% if pages_config.previous_page.disabled %}disabled{% endif %}"
+                           href="{% url 'pokemons:get_pokemons' %}?offset={{ pages_config.previous_page.value }}">
+                            < Previous
+                        </a>
+                    </li>
+
+                    {% for page in pages_config.pages %}
+                        <li class="page-item">
+                            <a class="page-link {% if page.highlight %}text-secondary{% endif %}"
+                               href="{% url 'pokemons:get_pokemons' %}?offset={{ page.value }}">
+                                {{ page.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    <li class="page-item">
+                        <a class="page-link {% if pages_config.next_page.disabled %}disabled{% endif %}"
+                           href="{% url 'pokemons:get_pokemons' %}?offset={{ pages_config.next_page.value }}">
+                            Next >
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{% url 'pokemons:get_pokemons' %}?offset={{ pages_config.last_page.value }}">
+                            {{ pages_config.last_page.name }} >>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for pokemon in pokemons %}
+
+                <div class="col">
+                    <div class="card mx-auto">
+                        <div class="card-body">
+                            <h5 class="card-title text-capitalize">{{ pokemon.name }}</h5>
+                        </div>
+                        <img src="{{ pokemon.image }}" class="card-img-top" alt="pokemon {{ pokemon.name }}">
+                        <div class="card-body">
+                            <a href="{% url 'pokemons:get_pokemon' pokemon.id %}"
+                               class="btn btn-primary d-block">
+                                See details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}

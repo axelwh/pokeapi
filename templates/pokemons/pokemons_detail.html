@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <div class="card mx-auto">
+            <div class="card-body">
+                <h5 class="card-title text-capitalize">{{ pokemon.name }}</h5>
+            </div>
+            <img src="{{ pokemon.image }}" class="card-img-top max-h-"
+                 alt="imagen de {{ pokemon.name }}">
+            <div class="card-body">
+                <h5 class="card-title">Detalle de las características</h5>
+                {% if pokemon.height %}
+                    <p><b>Altura:</b>{{ pokemon.height }}</p>
+                {% endif %}
+                {% if pokemon.weight %}
+                    <p><b>Peso:</b>{{ pokemon.weight }}</p>
+                {% endif %}
+                {% if pokemon.types %}
+                    <p><b>Tipos:</b>
+                        <span class="text-capitalize">
+                        {% for type in pokemon.types %}
+                            <a href="{% url 'pokemons:get_pokemons' %}?type={{ type.type.id }}">
+                                {{ type.type.name }}
+                            </a>
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                        </span>
+                    </p>
+                {% endif %}
+                {% if pokemon.abilities %}
+                    <p><b>Habilidades:</b>
+                        <span class="text-capitalize">
+                        {% for ability in pokemon.abilities %}
+                            {{ ability.ability.name }}
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                        </span>
+                    </p>
+                {% endif %}
+                {% if pokemon.moves %}
+                    <p><b>Movimientos:</b>
+                        <span class="text-capitalize">
+                        {% for move in pokemon.moves %}
+                            {{ move.move.name }}
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                        </span>
+                    </p>
+                {% endif %}
+
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
